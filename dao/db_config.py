@@ -5,3 +5,4 @@ DB_PATH = "postgresql://neondb_owner:npg_5utNwhLvEel4@ep-lively-mud-acbp5jaw-poo
 
 def get_connection():
     return psycopg2.connect(DB_PATH)
+

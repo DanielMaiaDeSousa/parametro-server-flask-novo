@@ -3,7 +3,7 @@ from dao.db_config import get_connection
 
 class CursoDAO: 
 
-    sqlSelect = 'SELECT c.id, c.nome_curso, p.disciplina, p.nome FROM curso c LEFT JOIN turma t ON t.curso_id = c.id LEFT JOIN professor p ON t.professor_id = p.id order by id desc'
+    sqlSelect = 'SELECT id, nome_curso FROM curso ORDER BY id DESC'
 
 
     def listar(self):
@@ -28,6 +28,26 @@ class CursoDAO:
             return {"status": "ok"}
         except Exception as e:
             conn.rollback() 
+            return {"status": "erro", "mensagem": f"Erro: {str(e)}"}
+        finally:
+            conn.close()
+
+    def buscar_por_id(self,id):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, nome_curso FROM curso WHERE id = %s', (id,))        
+        registro = cursor.fetchone() # retorna o registro selecionado
+        conn.close()
+        return registro
+    
+    def remover(self,id):
+        conn = get_connection()
+        cursor = conn.cursor()
+        try: 
+            cursor.execute('DELETE FROM curso WHERE id = %s', (id,))
+            conn.commit()
+            return {"status": "ok"}
+        except Exception as e:
             return {"status": "erro", "mensagem": f"Erro: {str(e)}"}
         finally:
             conn.close()
