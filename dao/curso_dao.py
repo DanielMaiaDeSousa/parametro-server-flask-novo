@@ -5,7 +5,7 @@ class CursoDAO:
 
     sqlSelect = 'SELECT id, nome_curso FROM curso ORDER BY id DESC'
 
-
+#atualizar
     def listar(self):
         conn = get_connection()
         cursor = conn.cursor()
